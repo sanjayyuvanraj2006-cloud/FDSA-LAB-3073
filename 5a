@@ -1,0 +1,10 @@
+From scipy.stats import norm
+importnumpy as np
+importmatplotlib.pyplot as plt
+importseaborn as sb
+data = np.arange(1,10,0.01)
+pdf = norm.pdf(data , loc = 5.3 , scale = 1 )
+sb.set_style('whitegrid')
+sb.lineplot(data, pdf , color = 'black')
+plt.xlabel('Heights')
+plt.ylabel('Probability Density')
