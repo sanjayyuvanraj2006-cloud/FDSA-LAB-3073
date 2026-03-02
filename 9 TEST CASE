@@ -1,0 +1,21 @@
+import pandas as pd
+import scipy.stats as stats
+
+# Small sample data (3 values per group)
+df = pd.DataFrame({
+    'A': [10, 12, 11],
+    'B': [14, 15, 13],
+    'C': [18, 17, 19],
+    'D': [22, 21, 23]
+})
+
+# Perform One-Way ANOVA
+fvalue, pvalue = stats.f_oneway(df['A'], df['B'], df['C'], df['D'])
+
+print("F-value:", fvalue)
+print("P-value:", pvalue)
+
+OUTPUT:
+
+F-value: 68.75
+P-value: 4.711830632131458
