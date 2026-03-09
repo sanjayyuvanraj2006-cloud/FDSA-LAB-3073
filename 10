@@ -1,0 +1,56 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+import warnings 
+warnings.filterwarnings('ignore')
+
+# 1. Create the direct dataset
+data = {
+    'area': [2600, 3000, 3200, 3600, 4000, 5000, 5500, 6000, 6200, 7000, 7500, 8000],
+    'price': [550000, 565000, 610000, 680000, 725000, 810000, 825000, 890000, 910000, 950000, 1010000, 1100000]
+}
+housing = pd.DataFrame(data)
+
+# 2. Filter only area and price
+df = housing.loc[:, ['area', 'price']]
+
+# 3. Rescaling the variables
+scaler = MinMaxScaler()
+# Re-wrapping in DataFrame to keep column names
+df_scaled = pd.DataFrame(scaler.fit_transform(df), columns=['area', 'price'])
+
+# 4. Split into train and test
+df_train, df_test = train_test_split(
+    df_scaled, 
+    train_size=0.7, 
+    test_size=0.3, 
+    random_state=10
+)
+
+# 5. Prepare X and y (Reshaping is required for sklearn)
+X_train = df_train['area'].values.reshape(-1, 1)
+y_train = df_train['price']
+X_test = df_test['area'].values.reshape(-1, 1)
+y_test = df_test['price']
+
+# 6. Model Building & Prediction
+lm = LinearRegression()
+lm.fit(X_train, y_train)
+y_pred = lm.predict(X_test)
+
+# 7. Output Results
+print("--- Model Statistics ---")
+print(f"Training samples: {len(df_train)}")
+print(f"Test samples: {len(df_test)}")
+print(f"R-squared Score: {r2_score(y_test, y_pred):.4f}")
+
+# 8. Visualize
+
+sns.regplot(x="area", y="price", data=df_scaled, fit_reg=True, line_kws={"color": "red"})
+plt.title("Direct Dataset: Area vs Price (Scaled)")
+plt.show()
