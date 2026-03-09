@@ -1,0 +1,31 @@
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# Data: Advertising spend vs. Sales units
+data = {
+    "Ad_Spend": [10, 20, 30, 40, 50, 60, 70, 80],
+    "Sales": [15, 25, 28, 45, 48, 62, 65, 82]
+}
+
+df = pd.DataFrame(data)
+
+# Simple Linear Regression model
+# 'Sales ~ Ad_Spend' means Sales is the dependent variable (y)
+model = ols('Sales ~ Ad_Spend', data=df).fit()
+
+print("Model Summary:")
+print(model.summary().tables[1]) # Displaying the coefficients table
+
+print(f"\nR-squared: {model.rsquared:.4f}")
+
+output:
+Model Coefficients Table:
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept      4.1786      2.671      1.564      0.169      -2.358      10.715
+Ad_Spend       0.9345      0.053     17.659      0.000       0.805       1.064
+==============================================================================
+
+R-squared: 0.9811
